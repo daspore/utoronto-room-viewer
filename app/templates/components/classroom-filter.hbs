@@ -1,0 +1,52 @@
+<div class="search-form">
+  <div class="form-item">
+    <label>
+      Show booking for date:
+      {{pikaday-inputless format="YYYY/MM/DD" value=date onSelection=(action 'dateSelected')}}
+    </label>
+  </div>
+  <div class="form-item">
+    <label>
+      Filter by capacity?
+      {{input type="checkbox" checked=selectCapacity}}
+    </label>
+  </div>
+  {{#if selectCapacity}}
+    <div class="form-item">
+      <label>
+        Room capacity:
+        <div class="room-capacity">
+          <div style="float: left">{{minCapacity}}</div>
+          <div style="float: right">{{maxCapacity}}</div>
+          <div style="clear: both"></div>
+
+          {{input-range min=capacitySliderMinValue max=capacitySliderMaxValue values=(concat minCapacity ',' maxCapacity) onlowinput=(action "updateMinCapacity") onhighinput=(action "updateMaxCapacity")}}
+        </div>
+      </label>
+    </div>
+  {{/if}}
+  <div class="form-item">
+    <label>
+      Building(s):
+      {{#power-select-multiple placeholder="Select one or more buildings" options=allBuildings selected=selectedBuildings onchange=(action "selectBuilding") as |building|}}
+        {{building.desc}}
+      {{/power-select-multiple}}
+    </label>
+  </div>
+  {{#if selectedBuildings}}
+    <div class="form-item">
+      <label>
+        Room(s):
+        {{#power-select-multiple placeholder="Select some rooms or leave blank to view all" options=filteredRooms selected=selectedRooms onchange=(action "selectRoom") as |room|}}
+          {{room.room}}
+        {{/power-select-multiple}}
+      </label>
+    </div>
+  {{/if}}
+</div>
+
+<div>
+  {{#link-to "calendar" (query-params date=dateFormatted buildings=selectedBuildingsFormatted rooms=selectedRoomsFormatted minCapacity=(if selectCapacity minCapacity '') maxCapacity=(if selectCapacity maxCapacity ''))}}
+    Show calendar
+  {{/link-to}}
+</div>

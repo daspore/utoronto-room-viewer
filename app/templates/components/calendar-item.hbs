@@ -1,0 +1,5 @@
+{{#if (calendar-conflict bookings time)}}
+  {{yield (calendar-conflict bookings time) 'conflict'}}
+{{else}}
+  {{yield null ''}}
+{{/if}}

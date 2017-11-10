@@ -1,0 +1,24 @@
+<div class="calendar-row">
+  <div class="name">{{room.bldg}} {{room.room}}</div>
+  <div class="capacity">{{if room.capacity room.capacity '-'}}</div>
+  <div class="hours">
+    {{#if (is-pending bookings)}}
+      Loading...
+    {{else}}
+      <ul class="calendar-list">
+        {{#each hours as |hour|}}
+          {{#calendar-item bookings=(await bookings) time=(create-timestamp date hour) as |schedule className|}}
+            <li class="booking {{className}}">
+              {{#if schedule}}
+                {{schedule.desc}}
+              {{else}}
+                <button>Reserve</button>
+              {{/if}}
+            </li>
+          {{/calendar-item}}
+        {{/each}}
+      </ul>
+    {{/if}}
+  </div>
+  <div class="clear"></div>
+</div>
